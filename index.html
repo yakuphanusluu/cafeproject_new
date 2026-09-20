@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brew & Bean — Artisan Kafe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+
+    <!-- ============ NAV ============ -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-left" style="display:flex; align-items:center; gap:12px;">
+                <a href="#hero" class="logo">
+                    <span class="logo-icon">☕</span>
+                    <span class="logo-text">Brew & Bean</span>
+                </a>
+                <!-- Masa Numarası Etiketi -->
+                <div class="table-badge" id="tableBadge" style="display:none;">
+                    🪑 Masa <span id="tableNoDisplay">-</span>
+                </div>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="#hero">Ana Sayfa</a></li>
+                <li><a href="#menu">Menü</a></li>
+                <li><a href="#about">Hakkımızda</a></li>
+                <li><a href="#contact">İletişim</a></li>
+            </ul>
+
+            <div class="nav-right" style="display:flex; align-items:center; gap:8px;">
+                <button class="cart-btn" id="cartBtn" aria-label="Sepet">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 01-8 0"/>
+                    </svg>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Menü">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">— Est. 2024 —</p>
+            <h1 class="hero-title">Her Yudumda<br><span>Bir Hikaye</span></h1>
+            <p class="hero-desc">El yapımı kahveler, taze unlu mamuller ve sıcak bir atmosfer.<br>Brew & Bean'e hoş geldiniz.</p>
+            <a href="#menu" class="btn btn-primary">Menüyü Keşfet</a>
+        </div>
+        <div class="hero-scroll">
+            <span>Aşağı Kaydır</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- ============ FEATURES ============ -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌱</div>
+                    <h3>Özel Harman</h3>
+                    <p>Dünyanın en iyi çekirdeklerinden özenle hazırlanmış harmanlar</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🥐</div>
+                    <h3>Taze Lezzetler</h3>
+                    <p>Her gün taze pişirilen unlu mamuller ve atıştırmalıklar</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>QR ile Sipariş</h3>
+                    <p>Masanızdaki QR kodu okutun, kolayca sipariş verin</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ MENU ============ -->
+    <section class="menu-section" id="menu">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-subtitle">Menümüz</p>
+                <h2 class="section-title">Lezzetlerimizi Keşfedin</h2>
+            </div>
+            <div class="menu-filters">
+                <button class="filter-btn active" data-category="all">Tümü</button>
+                <button class="filter-btn" data-category="sicak-kahve">Sıcak Kahveler</button>
+                <button class="filter-btn" data-category="soguk-kahve">Soğuk Kahveler</button>
+                <button class="filter-btn" data-category="ozel-kahve">Özel Kahveler</button>
+                <button class="filter-btn" data-category="tatli">Tatlılar</button>
+                <button class="filter-btn" data-category="atistirmalik">Atıştırmalık</button>
+            </div>
+            <div class="menu-grid" id="menuGrid"></div>
+        </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-images">
+                    <div class="about-img about-img-1">
+                        <div class="img-placeholder"><span>☕</span></div>
+                    </div>
+                    <div class="about-img about-img-2">
+                        <div class="img-placeholder"><span>🫘</span></div>
+                    </div>
+                </div>
+                <div class="about-content">
+                    <p class="section-subtitle">Hikayemiz</p>
+                    <h2 class="section-title">Tutkuyla Demlenen<br>Kahveler</h2>
+                    <p class="about-text">2024 yılında küçük bir dükkânda başlayan hikayemiz, kahveye olan tutkumuzla büyüdü. Her fincan, çekirdeklerin seçiminden kavurmaya, öğütmeden demlemeye kadar özenle hazırlanır.</p>
+                    <p class="about-text">Etiyopya'dan Kolombiya'ya, Brezilya'dan Endonezya'ya — en kaliteli çekirdekleri doğrudan çiftçilerden temin ediyoruz.</p>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <span class="stat-number">15+</span>
+                            <span class="stat-label">Çeşit Kahve</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">5K+</span>
+                            <span class="stat-label">Mutlu Müşteri</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Özel Harman</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-subtitle">Bize Ulaşın</p>
+                <h2 class="section-title">İletişim</h2>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <div class="contact-icon">📍</div>
+                        <h4>Adres</h4>
+                        <p>Kahve Sokak No: 42<br>Kadıköy, İstanbul</p>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">📞</div>
+                        <h4>Telefon</h4>
+                        <p>+90 (212) 555 42 42</p>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">🕐</div>
+                        <h4>Çalışma Saatleri</h4>
+                        <p>Pazartesi - Cuma: 07:00 - 22:00<br>Cumartesi - Pazar: 08:00 - 23:00</p>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <input type="text" placeholder="Adınız Soyadınız" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="E-posta Adresiniz" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Mesajınız" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Gönder</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <span class="logo-icon">☕</span>
+                    <span class="logo-text">Brew & Bean</span>
+                    <p>Her yudumda kalite, her fincanda hikaye.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Hızlı Bağlantılar</h4>
+                    <a href="#hero">Ana Sayfa</a>
+                    <a href="#menu">Menü</a>
+                    <a href="#about">Hakkımızda</a>
+                    <a href="#contact">İletişim</a>
+                </div>
+                <div class="footer-social">
+                    <h4>Bizi Takip Edin</h4>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Instagram">📸</a>
+                        <a href="#" aria-label="Twitter">🐦</a>
+                        <a href="#" aria-label="Facebook">📘</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Brew & Bean. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============ SEPET PANEL ============ -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <aside class="cart-panel" id="cartPanel">
+        <div class="cart-header">
+            <h3>Sepetiniz</h3>
+            <button class="cart-close" id="cartClose" aria-label="Sepeti Kapat">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty" id="cartEmpty">
+                <span>🛒</span>
+                <p>Sepetiniz boş</p>
+            </div>
+        </div>
+        <div class="cart-footer" id="cartFooter" style="display:none;">
+            <div class="cart-total">
+                <span>Toplam</span>
+                <span id="cartTotal">₺0</span>
+            </div>
+            <button class="btn btn-primary btn-full" id="checkoutBtn">Sipariş Ver</button>
+        </div>
+    </aside>
+
+    <!-- ============ SİPARİŞ / ÖDEME MODAL ============ -->
+    <dialog class="checkout-dialog" id="checkoutDialog">
+        <div class="dialog-content">
+            <button class="dialog-close" id="dialogClose" aria-label="Kapat">✕</button>
+
+            <!-- Step 1: Sipariş Özeti -->
+            <div class="checkout-step" id="step1">
+                <h2>Sipariş Özeti</h2>
+                <div class="order-summary" id="orderSummary"></div>
+                <div class="order-total-row">
+                    <span>Toplam Tutar:</span>
+                    <span class="order-total" id="orderTotal">₺0</span>
+                </div>
+                <button class="btn btn-primary btn-full" id="toStep2">Devam Et →</button>
+            </div>
+
+            <!-- Step 2: Bilgiler + Ödeme -->
+            <div class="checkout-step hidden" id="step2">
+                <h2>Bilgileriniz & Ödeme</h2>
+                <form id="orderForm" class="checkout-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName">Ad Soyad</label>
+                            <input type="text" id="fullName" required placeholder="Adınız Soyadınız">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Telefon (Opsiyonel)</label>
+                            <input type="tel" id="phone" placeholder="05xx xxx xx xx">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="note">Sipariş Notu (Opsiyonel)</label>
+                        <textarea id="note" rows="2" placeholder="Ekstra süt, az şekerli vb."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Ödeme Yöntemi</label>
+                        <div class="radio-group">
+                            <label class="radio-card">
+                                <input type="radio" name="payment" value="kart" checked>
+                                <div class="radio-content">
+                                    <span class="radio-icon">💳</span>
+                                    <div>
+                                        <strong>Kredi / Banka Kartı</strong>
+                                        <p>Kasada kartla ödeme</p>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="payment" value="nakit">
+                                <div class="radio-content">
+                                    <span class="radio-icon">💵</span>
+                                    <div>
+                                        <strong>Nakit</strong>
+                                        <p>Kasada nakit ödeme</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="order-final-total">
+                        <div class="total-line total-grand">
+                            <span>Toplam Tutar</span>
+                            <span id="finalTotal">₺0</span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="backToStep1">← Geri</button>
+                        <button type="submit" class="btn btn-primary btn-success" id="placeOrderBtn">
+                            <span class="btn-icon">🔒</span> Siparişi Onayla
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 3: Başarılı + Takip -->
+            <div class="checkout-step hidden" id="step3">
+                <div class="success-screen">
+                    <div class="success-icon">✅</div>
+                    <h2>Siparişiniz Alındı!</h2>
+                    <p class="success-order-no">Sipariş No: <strong id="orderNo"></strong></p>
+                    <p>Siparişiniz hazırlanmaya başlandığında bilgilendirileceksiniz.</p>
+
+                    <!-- Sipariş Takip -->
+                    <div class="order-tracker" id="orderTracker">
+                        <div class="tracker-step active" data-status="alindi">
+                            <div class="tracker-dot"></div>
+                            <span>Alındı</span>
+                        </div>
+                        <div class="tracker-line"></div>
+                        <div class="tracker-step" data-status="hazirlaniyor">
+                            <div class="tracker-dot"></div>
+                            <span>Hazırlanıyor</span>
+                        </div>
+                        <div class="tracker-line"></div>
+                        <div class="tracker-step" data-status="hazir">
+                            <div class="tracker-dot"></div>
+                            <span>Hazır</span>
+                        </div>
+                        <div class="tracker-line"></div>
+                        <div class="tracker-step" data-status="teslim_edildi">
+                            <div class="tracker-dot"></div>
+                            <span>Teslim Edildi</span>
+                        </div>
+                    </div>
+
+                    <div class="success-details" id="successDetails"></div>
+                    <button class="btn btn-primary" id="closeSuccess">Tamam</button>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- ============ MASA SEÇİM MODAL ============ -->
+    <dialog class="checkout-dialog" id="tableDialog">
+        <div class="dialog-content" style="text-align:center; padding:48px 36px;">
+            <div style="font-size:3rem; margin-bottom:16px;">🪑</div>
+            <h2 style="font-family:var(--font-display,'Playfair Display',serif); margin-bottom:8px;">Masa Numarası Gerekli</h2>
+            <p style="color:var(--clr-text-muted,#7a7a7a); margin-bottom:24px;">Sipariş verebilmek için lütfen masanızdaki QR kodu okutun veya masa numaranızı girin.</p>
+            <div class="form-group" style="max-width:200px; margin:0 auto 20px;">
+                <input type="number" id="manualTableNo" min="1" max="99" placeholder="Masa No" style="text-align:center; font-size:1.2rem; padding:14px;">
+            </div>
+            <button class="btn btn-primary" id="setTableBtn">Devam Et</button>
+        </div>
+    </dialog>
+
+    <!-- ============ TOAST BİLDİRİM ============ -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

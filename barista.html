@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brew & Bean — Barista Paneli</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ========= BARISTA PANEL STYLES ========= */
+        :root {
+            --clr-primary: #1a1a2e;
+            --clr-accent: #c8956c;
+            --clr-accent-hover: #b07a54;
+            --clr-accent-light: #f5ebe0;
+            --clr-bg: #f3f0eb;
+            --clr-surface: #ffffff;
+            --clr-text: #2d2d2d;
+            --clr-text-muted: #7a7a7a;
+            --clr-border: #e8e0d8;
+
+            --status-alindi: #3b82f6;
+            --status-hazirlaniyor: #f59e0b;
+            --status-hazir: #10b981;
+            --status-teslim: #6b7280;
+
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+            --radius: 16px;
+            --shadow: 0 4px 20px rgba(0,0,0,.08);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--clr-bg);
+            color: var(--clr-text);
+            min-height: 100vh;
+        }
+
+        /* ---- TOP BAR ---- */
+        .topbar {
+            background: var(--clr-primary);
+            color: #fff;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .topbar h1 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .topbar-badge {
+            background: var(--clr-accent);
+            color: #fff;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: .8rem;
+            font-weight: 600;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: .85rem;
+            color: rgba(255,255,255,.7);
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse 2s infinite;
+            display: inline-block;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .4; }
+        }
+
+        .sound-toggle {
+            background: rgba(255,255,255,.15);
+            border: none;
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: .85rem;
+            transition: .2s;
+        }
+        .sound-toggle:hover { background: rgba(255,255,255,.25); }
+
+        /* ---- KANBAN BOARD ---- */
+        .kanban {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 24px;
+            min-height: calc(100vh - 64px);
+            align-items: start;
+        }
+
+        .kanban-column {
+            background: rgba(255,255,255,.5);
+            border-radius: var(--radius);
+            padding: 16px;
+            min-height: 300px;
+        }
+
+        .column-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--clr-border);
+        }
+
+        .column-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .column-header .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .column-count {
+            background: var(--clr-accent-light);
+            color: var(--clr-accent);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .8rem;
+            font-weight: 700;
+        }
+
+        .col-alindi .dot { background: var(--status-alindi); }
+        .col-hazirlaniyor .dot { background: var(--status-hazirlaniyor); }
+        .col-hazir .dot { background: var(--status-hazir); }
+        .col-teslim .dot { background: var(--status-teslim); }
+
+        .col-alindi .column-header { border-color: var(--status-alindi); }
+        .col-hazirlaniyor .column-header { border-color: var(--status-hazirlaniyor); }
+        .col-hazir .column-header { border-color: var(--status-hazir); }
+        .col-teslim .column-header { border-color: var(--status-teslim); }
+
+        /* ---- ORDER CARD ---- */
+        .order-card {
+            background: var(--clr-surface);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid transparent;
+            transition: .3s ease;
+            animation: cardIn .3s ease-out;
+        }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,.12);
+        }
+
+        .col-alindi .order-card { border-left-color: var(--status-alindi); }
+        .col-hazirlaniyor .order-card { border-left-color: var(--status-hazirlaniyor); }
+        .col-hazir .order-card { border-left-color: var(--status-hazir); }
+        .col-teslim .order-card { border-left-color: var(--status-teslim); }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+
+        .card-order-no {
+            font-weight: 700;
+            font-size: .95rem;
+            color: var(--clr-primary);
+        }
+
+        .card-table {
+            background: var(--clr-accent);
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: .75rem;
+            font-weight: 700;
+        }
+
+        .card-customer {
+            font-size: .85rem;
+            color: var(--clr-text-muted);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-items {
+            background: var(--clr-bg);
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-bottom: 12px;
+        }
+
+        .card-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: .85rem;
+        }
+
+        .card-item-left {
+            display: flex;
+            gap: 6px;
+        }
+
+        .card-item-qty {
+            color: var(--clr-accent);
+            font-weight: 700;
+        }
+
+        .card-note {
+            background: #fff3cd;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: .8rem;
+            color: #856404;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: start;
+            gap: 6px;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: .75rem;
+            color: var(--clr-text-muted);
+            margin-bottom: 14px;
+        }
+
+        .card-payment {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: var(--clr-accent-light);
+            font-weight: 600;
+            color: var(--clr-accent);
+        }
+
+        .card-total {
+            font-weight: 700;
+            font-size: .95rem;
+            color: var(--clr-primary);
+        }
+
+        .card-action {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: .85rem;
+            cursor: pointer;
+            transition: .2s;
+            color: #fff;
+        }
+
+        .card-action:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.1);
+        }
+
+        .card-action:active {
+            transform: translateY(0);
+        }
+
+        .btn-to-hazirlaniyor { background: var(--status-hazirlaniyor); }
+        .btn-to-hazir { background: var(--status-hazir); }
+        .btn-to-teslim { background: var(--status-teslim); }
+
+        .card-done {
+            text-align: center;
+            font-size: .8rem;
+            color: var(--status-teslim);
+            font-weight: 600;
+            padding: 8px 0 0;
+        }
+
+        /* ---- EMPTY STATE ---- */
+        .column-empty {
+            text-align: center;
+            padding: 40px 16px;
+            color: var(--clr-text-muted);
+            font-size: .85rem;
+        }
+
+        .column-empty span {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* ---- NEW ORDER FLASH ---- */
+        .order-card.new-order {
+            animation: newFlash .6s ease;
+        }
+
+        @keyframes newFlash {
+            0%, 100% { background: var(--clr-surface); }
+            30% { background: #dbeafe; }
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 1200px) {
+            .kanban { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .kanban { grid-template-columns: 1fr; padding: 16px; }
+            .topbar { padding: 12px 16px; flex-wrap: wrap; gap: 8px; }
+        }
+
+        /* ---- NOTIFICATION SOUND ---- */
+        .notification-banner {
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--status-alindi);
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 10px 40px rgba(59,130,246,.3);
+            z-index: 200;
+            transition: .4s cubic-bezier(.4,0,.2,1);
+            opacity: 0;
+        }
+
+        .notification-banner.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <h1>☕ Barista Paneli</h1>
+            <span class="topbar-badge" id="totalOrders">0 Sipariş</span>
+        </div>
+        <div class="topbar-right">
+            <span><span class="live-dot"></span> Canlı</span>
+            <button class="sound-toggle" id="soundToggle" title="Bildirim Sesi">🔔 Ses Açık</button>
+            <span id="clock"></span>
+        </div>
+    </div>
+
+    <!-- KANBAN BOARD -->
+    <div class="kanban">
+        <!-- Alındı -->
+        <div class="kanban-column col-alindi">
+            <div class="column-header">
+                <h2><span class="dot"></span> Alındı</h2>
+                <span class="column-count" id="countAlindi">0</span>
+            </div>
+            <div class="column-body" id="colAlindi">
+                <div class="column-empty"><span>📋</span>Yeni sipariş bekleniyor...</div>
+            </div>
+        </div>
+
+        <!-- Hazırlanıyor -->
+        <div class="kanban-column col-hazirlaniyor">
+            <div class="column-header">
+                <h2><span class="dot"></span> Hazırlanıyor</h2>
+                <span class="column-count" id="countHazirlaniyor">0</span>
+            </div>
+            <div class="column-body" id="colHazirlaniyor">
+                <div class="column-empty"><span>⏳</span>Henüz hazırlanan sipariş yok</div>
+            </div>
+        </div>
+
+        <!-- Hazır -->
+        <div class="kanban-column col-hazir">
+            <div class="column-header">
+                <h2><span class="dot"></span> Hazır</h2>
+                <span class="column-count" id="countHazir">0</span>
+            </div>
+            <div class="column-body" id="colHazir">
+                <div class="column-empty"><span>✅</span>Teslim bekleyen sipariş yok</div>
+            </div>
+        </div>
+
+        <!-- Teslim Edildi -->
+        <div class="kanban-column col-teslim">
+            <div class="column-header">
+                <h2><span class="dot"></span> Teslim Edildi</h2>
+                <span class="column-count" id="countTeslim">0</span>
+            </div>
+            <div class="column-body" id="colTeslim">
+                <div class="column-empty"><span>🎉</span>Henüz teslim edilen sipariş yok</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bildirim Bannerı -->
+    <div class="notification-banner" id="notifBanner">🔔 Yeni sipariş geldi!</div>
+
+    <script src="barista.js"></script>
+</body>
+</html>

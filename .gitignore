@@ -1,0 +1,6 @@
+# Backend Config
+api/config.php
+
+# OS generated files
+.DS_Store
+Thumbs.db
