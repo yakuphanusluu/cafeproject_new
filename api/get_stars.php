@@ -3,20 +3,20 @@ require_once 'config.php';
 
 header('Content-Type: application/json');
 
-\ = \['token'] ?? '';
-if (!\) {
+$token = $_GET['token'] ?? '';
+if (!$token) {
     echo json_encode(['stars' => 0]);
     exit;
 }
 
-\ = getDB();
-\ = \->prepare("SELECT stars FROM users WHERE token = ?");
-\->bind_param('s', \);
-\->execute();
-\ = \->get_result()->fetch_assoc();
+$db = getDB();
+$stmt = $db->prepare("SELECT stars FROM users WHERE token = ?");
+$stmt->bind_param('s', $token);
+$stmt->execute();
+$res = $stmt->get_result()->fetch_assoc();
 
-if (\) {
-    echo json_encode(['stars' => intval(\['stars'])]);
+if ($res) {
+    echo json_encode(['stars' => intval($res['stars'])]);
 } else {
     echo json_encode(['stars' => 0]);
 }
