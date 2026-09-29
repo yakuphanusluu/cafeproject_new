@@ -59,6 +59,13 @@ if ($stmt->execute()) {
             $updateUser->bind_param('is', $starsEarned, $order['customer_token']);
             $updateUser->execute();
             
+            if ($updateUser->affected_rows === 0) {
+                // Eger bu Firebase token'i users tablosunda yoksa, onu ekle ve yildizi ver!
+                $insertUser = $db->prepare("INSERT INTO users (token, stars) VALUES (?, ?)");
+                $insertUser->bind_param('si', $order['customer_token'], $starsEarned);
+                $insertUser->execute();
+            }
+            
             // Siparisi yildiz verildi olarak isaretle
             $markAwarded = $db->prepare("UPDATE orders SET stars_awarded = 1 WHERE id = ?");
             $markAwarded->bind_param('i', $orderId);
