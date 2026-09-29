@@ -10,6 +10,21 @@ setCORS();
 $db = getDB();
 
 $queries = [
+    // Kullanicilar tablosu (Auth)
+    "CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        full_name VARCHAR(100) NOT NULL,
+        username VARCHAR(50) NOT NULL UNIQUE,
+        email VARCHAR(100) NOT NULL UNIQUE,
+        password_hash VARCHAR(255) NOT NULL,
+        is_verified TINYINT(1) NOT NULL DEFAULT 0,
+        verification_code VARCHAR(6) DEFAULT NULL,
+        reset_code VARCHAR(6) DEFAULT NULL,
+        token VARCHAR(64) DEFAULT NULL,
+        stars INT NOT NULL DEFAULT 0,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+
     // Siparişler tablosu
     "CREATE TABLE IF NOT EXISTS orders (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -17,11 +32,13 @@ $queries = [
         customer_name VARCHAR(100) NOT NULL,
         phone VARCHAR(20) DEFAULT '',
         table_no INT NOT NULL DEFAULT 0,
-        payment_method ENUM('kart', 'nakit') NOT NULL DEFAULT 'nakit',
+        payment_method ENUM('kart', 'nakit', 'yildiz') NOT NULL DEFAULT 'nakit',
         status ENUM('alindi', 'hazirlaniyor', 'hazir', 'teslim_edildi') NOT NULL DEFAULT 'alindi',
         note TEXT DEFAULT NULL,
         subtotal DECIMAL(10,2) NOT NULL DEFAULT 0,
         customer_token VARCHAR(64) DEFAULT NULL,
+        stars_awarded TINYINT(1) NOT NULL DEFAULT 0,
+        used_stars TINYINT(1) NOT NULL DEFAULT 0,
         created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         INDEX idx_status (status),
@@ -53,7 +70,12 @@ $queries = [
         orders_data JSON DEFAULT NULL,
         created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         UNIQUE KEY idx_date (report_date)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+
+    "ALTER TABLE users ADD COLUMN stars INT NOT NULL DEFAULT 0",
+    "ALTER TABLE orders ADD COLUMN stars_awarded TINYINT(1) NOT NULL DEFAULT 0",
+    "ALTER TABLE orders ADD COLUMN used_stars TINYINT(1) NOT NULL DEFAULT 0",
+    "ALTER TABLE orders MODIFY COLUMN payment_method ENUM('kart', 'nakit', 'yildiz') NOT NULL DEFAULT 'nakit'"
 ];
 
 $results = [];

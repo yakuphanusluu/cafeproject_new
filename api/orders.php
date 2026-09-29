@@ -80,25 +80,58 @@ function handlePost() {
     $customerName = $db->real_escape_string($data['customer_name']);
     $phone = $db->real_escape_string($data['phone'] ?? '');
     $tableNo = intval($data['table_no']);
-    $paymentMethod = in_array($data['payment_method'] ?? '', ['kart', 'nakit']) ? $data['payment_method'] : 'nakit';
+    $paymentMethod = in_array($data['payment_method'] ?? '', ['kart', 'nakit', 'yildiz']) ? $data['payment_method'] : 'nakit';
     $note = $db->real_escape_string($data['note'] ?? '');
+    $userToken = $db->real_escape_string($data['user_token'] ?? '');
+    $usedStars = isset($data['used_stars']) && $data['used_stars'] ? 1 : 0;
+    
+    // Yildiz kullanimi kontrolu
+    if ($usedStars) {
+        if (empty($userToken)) {
+            sendJSON(['error' => 'Yildiz kullanmak icin oturum acmalisiniz'], 400);
+        }
+        $checkStmt = $db->prepare("SELECT id, stars FROM users WHERE token = ?");
+        $checkStmt->bind_param('s', $userToken);
+        $checkStmt->execute();
+        $userRow = $checkStmt->get_result()->fetch_assoc();
+        
+        if (!$userRow || $userRow['stars'] < 10) {
+            sendJSON(['error' => 'Yeterli yildiziniz yok (En az 10 gerekli)'], 400);
+        }
+    }
+
     $customerToken = bin2hex(random_bytes(16));
+    if (!empty($userToken)) {
+        // If we have a user token, use it as customer_token so we can track them
+        $customerToken = $userToken;
+    }
 
     // Subtotal hesapla
     $subtotal = 0;
     foreach ($data['items'] as $item) {
         $subtotal += floatval($item['price']) * intval($item['qty']);
     }
+    
+    if ($usedStars) {
+        $subtotal = 0; // Bedava kahve
+    }
 
-    // Siparişi kaydet
-    $stmt = $db->prepare("INSERT INTO orders (order_no, customer_name, phone, table_no, payment_method, status, note, subtotal, customer_token) VALUES (?, ?, ?, ?, ?, 'alindi', ?, ?, ?)");
-    $stmt->bind_param('sssissds', $orderNo, $customerName, $phone, $tableNo, $paymentMethod, $note, $subtotal, $customerToken);
+    // Siparis kaydet
+    $stmt = $db->prepare("INSERT INTO orders (order_no, customer_name, phone, table_no, payment_method, status, note, subtotal, customer_token, used_stars) VALUES (?, ?, ?, ?, ?, 'alindi', ?, ?, ?, ?)");
+    $stmt->bind_param('sssissdsi', $orderNo, $customerName, $phone, $tableNo, $paymentMethod, $note, $subtotal, $customerToken, $usedStars);
 
     if (!$stmt->execute()) {
-        sendJSON(['error' => 'Sipariş kaydedilemedi: ' . $db->error], 500);
+        sendJSON(['error' => 'Siparis kaydedilemedi: ' . $db->error], 500);
     }
 
     $orderId = $db->insert_id;
+    
+    if ($usedStars) {
+        // Yildizlari dus
+        $deductStmt = $db->prepare("UPDATE users SET stars = stars - 10 WHERE token = ?");
+        $deductStmt->bind_param('s', $userToken);
+        $deductStmt->execute();
+    }
 
     // Sipariş kalemlerini kaydet
     $stmtItem = $db->prepare("INSERT INTO order_items (order_id, item_name, emoji, size_label, price, qty) VALUES (?, ?, ?, ?, ?, ?)");
