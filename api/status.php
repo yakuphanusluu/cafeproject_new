@@ -61,8 +61,11 @@ if ($stmt->execute()) {
             
             if ($updateUser->affected_rows === 0) {
                 // Eger bu Firebase token'i users tablosunda yoksa, onu ekle ve yildizi ver!
-                $insertUser = $db->prepare("INSERT INTO users (token, stars) VALUES (?, ?)");
-                $insertUser->bind_param('si', $order['customer_token'], $starsEarned);
+                // NOT NULL alanlar icin dummy degerler vererek ekleyelim (Google vb. ile giren ama users tablosunda kaydi olmayanlar icin)
+                $guestId = uniqid('guest_');
+                $guestEmail = $guestId . '@brew.com';
+                $insertUser = $db->prepare("INSERT INTO users (full_name, username, email, password_hash, token, stars) VALUES ('Misafir', ?, ?, '', ?, ?)");
+                $insertUser->bind_param('sssi', $guestId, $guestEmail, $order['customer_token'], $starsEarned);
                 $insertUser->execute();
             }
             

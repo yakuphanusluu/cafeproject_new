@@ -73,6 +73,8 @@ $queries = [
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
 
     "ALTER TABLE users ADD COLUMN stars INT NOT NULL DEFAULT 0",
+    "ALTER TABLE users ADD COLUMN star_dust INT NOT NULL DEFAULT 0",
+    "ALTER TABLE users ADD COLUMN last_play_date DATE DEFAULT NULL",
     "ALTER TABLE orders ADD COLUMN stars_awarded TINYINT(1) NOT NULL DEFAULT 0",
     "ALTER TABLE orders ADD COLUMN used_stars TINYINT(1) NOT NULL DEFAULT 0",
     "ALTER TABLE orders MODIFY COLUMN payment_method ENUM('kart', 'nakit', 'yildiz') NOT NULL DEFAULT 'nakit'"
