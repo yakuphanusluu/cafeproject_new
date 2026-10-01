@@ -28,7 +28,7 @@ if (!in_array($newStatus, $validStatuses)) {
 }
 
 // Siparisin var oldugunu kontrol et
-$stmt = $db->prepare("SELECT id, order_no, status, customer_token, stars_awarded FROM orders WHERE id = ?");
+$stmt = $db->prepare("SELECT id, order_no, status, customer_token, stars_awarded, used_stars FROM orders WHERE id = ?");
 $stmt->bind_param('i', $orderId);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -45,7 +45,7 @@ $stmt->bind_param('si', $newStatus, $orderId);
 if ($stmt->execute()) {
     
     // YILDIZ SISTEMI: Eger siparis 'teslim_edildi' yapildiysa ve daha once yildiz verilmediyse
-    if ($newStatus === 'teslim_edildi' && $order['stars_awarded'] == 0 && !empty($order['customer_token'])) {
+    if ($newStatus === 'teslim_edildi' && $order['stars_awarded'] == 0 && !empty($order['customer_token']) && empty($order['used_stars'])) {
         // Siparisteki toplam urun miktarini (qty) bul
         $qtyStmt = $db->prepare("SELECT SUM(qty) as total_qty FROM order_items WHERE order_id = ?");
         $qtyStmt->bind_param('i', $orderId);
